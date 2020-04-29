@@ -84,7 +84,7 @@ void authenticate(int sd) {
     input = read_input();
 
     // send the command to the server
-    
+
     // relese memory
     free(input);
 
@@ -179,6 +179,31 @@ void operate(int sd) {
     free(input);
 }
 
+int string2IntIP(char *stringIP){
+  char *dec = malloc(sizeof(char)*3);
+  int IP;
+  int i, l = strlen(stringIP), j = 0;
+
+  for(i = 0; i < l; i++){
+    char c = stringIP[i];
+    if(c != '.'){
+      dec[j++] = stringIP[i];
+    }
+    else{
+      IP += atoi(dec);
+      IP <<= 8;
+      free(dec);
+      dec = malloc(sizeof(char)*3);
+      j = 0;
+    }
+  }
+  IP += atoi(dec);
+
+  return IP;
+}
+
+
+
 /**
  * Run with
  *         ./myftp <SERVER_IP> <SERVER_PORT>
@@ -187,11 +212,19 @@ int main (int argc, char *argv[]) {
     int sd;
     struct sockaddr_in addr;
 
+    char *stringIP = argv[1];
+    int port = atol(argv[2]);
+    int IP = string2IntIP(stringIP);
+
+    printf("%s\n", stringIP);
+    printf("%i\n", port);
+
+
     // arguments checking
 
     // create socket and check for errors
-    
-    // set socket data    
+
+    // set socket data
 
     // connect and check for errors
 
